@@ -10,7 +10,7 @@ I want to thank [Digital Innovation One](https://digitalinnovation.one/) and tea
 
 Quero agradecer a [Digital Innovation One](https://digitalinnovation.one/) e ao Professor [Rodrigo Peleias](https://github.com/rpeleias) que ministraram o curso "Desenvolvendo um sistema de gerenciamento de pessoas em API REST com Spring Boot" no BootCamp "GFT START #2 Java", pois utilizei o curso como referencia para construção do projeto.
 
-##Technology
+## Technology
 
 - [Java 11 or higher](https://www.oracle.com/br/java/technologies/javase-jdk11-downloads.html)
 - [Spring 2.5.1](https://spring.io/projects/spring-boot)
