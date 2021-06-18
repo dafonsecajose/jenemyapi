@@ -1,8 +1,8 @@
 package com.enemyapi.enemy.service;
 
-import com.enemyapi.enemy.dto.reponse.MessageReponseDTO;
 import com.enemyapi.enemy.dto.request.EnemyDTO;
 import com.enemyapi.enemy.entity.Enemy;
+import com.enemyapi.enemy.exception.EnemyAlreadyRegisteredException;
 import com.enemyapi.enemy.exception.EnemyNotFoundException;
 import com.enemyapi.enemy.mapper.EnemyMapper;
 import com.enemyapi.enemy.repository.EnemyRepository;
@@ -11,26 +11,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor =  @__(@Autowired))
 public class EnemyService {
 
-    private EnemyRepository enemyRepository;
-
+    private final EnemyRepository enemyRepository;
     private final EnemyMapper enemyMapper = EnemyMapper.INSTANCE;
 
-    public MessageReponseDTO createEnemy(EnemyDTO enemyDTO) {
-        Enemy enemyToSave = enemyMapper.toModel(enemyDTO);
-
-        Enemy savedEnemy = enemyRepository.save(enemyToSave);
-        return createMessage(savedEnemy.getId(), "Created enemy with ID ");
+    public EnemyDTO createEnemy(EnemyDTO enemyDTO) throws EnemyAlreadyRegisteredException {
+        verifyIfAlreadyRegistered(enemyDTO.getName());
+        Enemy enemy = enemyMapper.toModel(enemyDTO);
+        Enemy savedEnemy = enemyRepository.save(enemy);
+        return enemyMapper.toDTO(savedEnemy);
     }
 
     public List<EnemyDTO> listAll(){
-        List<Enemy> allEnemy = enemyRepository.findAll();
-        return allEnemy.stream()
+        return enemyRepository.findAll()
+                .stream()
                 .map(enemyMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -40,12 +40,12 @@ public class EnemyService {
         return enemyMapper.toDTO(enemy);
     }
 
-    public MessageReponseDTO updateById(Long id, EnemyDTO enemyDTO) throws EnemyNotFoundException {
+    public EnemyDTO updateById(Long id, EnemyDTO enemyDTO) throws EnemyNotFoundException {
         verifyIfExists(id);
 
-        Enemy enemyToUpdate = enemyMapper.toModel(enemyDTO);
-        Enemy updatedEnemy = enemyRepository.save(enemyToUpdate);
-        return createMessage(updatedEnemy.getId(), "Updated enemy with ID ");
+        Enemy enemy = enemyMapper.toModel(enemyDTO);
+        Enemy updatedEnemy = enemyRepository.save(enemy);
+        return enemyMapper.toDTO(updatedEnemy);
     }
 
     public void delete(Long id) throws EnemyNotFoundException {
@@ -58,10 +58,10 @@ public class EnemyService {
                 .orElseThrow(() -> new EnemyNotFoundException(id));
     }
 
-    private MessageReponseDTO createMessage(Long id, String message) {
-        return MessageReponseDTO
-                .builder()
-                .message(message + id)
-                .build();
+    private void verifyIfAlreadyRegistered(String name) throws EnemyAlreadyRegisteredException{
+        Optional<Enemy> optSavedEnemy = enemyRepository.findByName(name);
+        if(optSavedEnemy.isPresent()) {
+            throw new EnemyAlreadyRegisteredException(name);
+        }
     }
 }
