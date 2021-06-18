@@ -13,7 +13,7 @@ import java.util.List;
 @Api("Manages enemy registration")
 public interface EnemyControllerDocs {
 
-    @ApiOperation(value = "Enemy creation operation")
+    @ApiOperation(value = "Operation to create enemy")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Success enemy creation"),
             @ApiResponse(code = 400, message = "Missing required fields or wrong field range value.")
@@ -26,6 +26,14 @@ public interface EnemyControllerDocs {
             @ApiResponse(code = 404, message = "Enemy with given ID not found.")
     })
     EnemyDTO findById(@PathVariable Long id) throws EnemyNotFoundException;
+
+    @ApiOperation(value = "Operation to upgrade enemy")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success enemy updated"),
+            @ApiResponse(code = 400, message = "Missing required fields or wrong field range value."),
+            @ApiResponse(code = 404, message = "Enemy with given ID not found.")
+    })
+    EnemyDTO updateById(@PathVariable Long id, EnemyDTO enemyDTO) throws EnemyNotFoundException;
 
     @ApiOperation(value = "Returns a list of all enemies registered in the system")
     @ApiResponses(value = {
