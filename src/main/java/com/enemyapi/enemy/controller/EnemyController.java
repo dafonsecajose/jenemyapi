@@ -1,7 +1,7 @@
 package com.enemyapi.enemy.controller;
 
-import com.enemyapi.enemy.dto.reponse.MessageReponseDTO;
 import com.enemyapi.enemy.dto.request.EnemyDTO;
+import com.enemyapi.enemy.exception.EnemyAlreadyRegisteredException;
 import com.enemyapi.enemy.exception.EnemyNotFoundException;
 import com.enemyapi.enemy.service.EnemyService;
 import lombok.AllArgsConstructor;
@@ -15,13 +15,13 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/enemy")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class EnemyController {
+public class EnemyController implements EnemyControllerDocs {
 
     private EnemyService enemyService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageReponseDTO createEnemy(@RequestBody @Valid EnemyDTO enemyDTO) {
+    public EnemyDTO createEnemy(@RequestBody @Valid EnemyDTO enemyDTO) throws EnemyAlreadyRegisteredException {
         return enemyService.createEnemy(enemyDTO);
     }
 
@@ -34,7 +34,7 @@ public class EnemyController {
     }
 
     @PutMapping("/{id}")
-    public MessageReponseDTO updateById(@PathVariable Long id, @RequestBody @Valid EnemyDTO enemyDTO) throws EnemyNotFoundException {
+    public EnemyDTO updateById(@PathVariable Long id, @RequestBody @Valid EnemyDTO enemyDTO) throws EnemyNotFoundException {
         return enemyService.updateById(id, enemyDTO);
     }
 

@@ -1,6 +1,7 @@
 package com.enemyapi.enemy.controller;
 
 import com.enemyapi.enemy.dto.request.EnemyDTO;
+import com.enemyapi.enemy.exception.EnemyAlreadyRegisteredException;
 import com.enemyapi.enemy.exception.EnemyNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,7 +19,7 @@ public interface EnemyControllerDocs {
             @ApiResponse(code = 201, message = "Success enemy creation"),
             @ApiResponse(code = 400, message = "Missing required fields or wrong field range value.")
     })
-    EnemyDTO createEnemy(EnemyDTO enemyDTO) throws EnemyAlreadyRegisteredException;
+    EnemyDTO createEnemy(EnemyDTO enemyDTO) throws EnemyAlreadyRegisteredException, EnemyAlreadyRegisteredException;
 
     @ApiOperation(value = "Returns enemy found by a given ID")
     @ApiResponses(value = {
