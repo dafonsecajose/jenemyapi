@@ -48,7 +48,7 @@ public class EnemyService {
         return enemyMapper.toDTO(updatedEnemy);
     }
 
-    public void delete(Long id) throws EnemyNotFoundException {
+    public void deleteById(Long id) throws EnemyNotFoundException {
         verifyIfExists(id);
         enemyRepository.deleteById(id);
     }

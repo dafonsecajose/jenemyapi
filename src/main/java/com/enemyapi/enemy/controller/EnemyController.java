@@ -34,6 +34,7 @@ public class EnemyController implements EnemyControllerDocs {
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public EnemyDTO updateById(@PathVariable Long id, @RequestBody @Valid EnemyDTO enemyDTO) throws EnemyNotFoundException {
         return enemyService.updateById(id, enemyDTO);
     }
@@ -41,7 +42,7 @@ public class EnemyController implements EnemyControllerDocs {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable Long id) throws EnemyNotFoundException {
-        enemyService.delete(id);
+        enemyService.deleteById(id);
     }
 
 }
